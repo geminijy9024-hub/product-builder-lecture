@@ -40,6 +40,11 @@
             --cta-bg: #111827;
             --cta-text: #ffffff;
             --cta-muted: rgba(255, 255, 255, 0.7);
+            --form-bg: rgba(255, 255, 255, 0.08);
+            --form-border: rgba(255, 255, 255, 0.16);
+            --field-bg: rgba(255, 255, 255, 0.95);
+            --field-text: #111827;
+            --field-placeholder: #667085;
         }
 
         :root[data-theme="dark"] {
@@ -63,6 +68,11 @@
             --cta-bg: #f8fafc;
             --cta-text: #0e1118;
             --cta-muted: rgba(14, 17, 24, 0.68);
+            --form-bg: rgba(14, 17, 24, 0.06);
+            --form-border: rgba(14, 17, 24, 0.12);
+            --field-bg: #ffffff;
+            --field-text: #111827;
+            --field-placeholder: #667085;
         }
 
         * {
@@ -481,9 +491,9 @@
             padding: clamp(40px, 6vw, 70px);
             border-radius: 8px;
             display: grid;
-            gap: 24px;
-            grid-template-columns: minmax(0, 1fr) auto;
-            align-items: center;
+            gap: clamp(28px, 5vw, 62px);
+            grid-template-columns: minmax(0, 0.9fr) minmax(320px, 0.72fr);
+            align-items: start;
         }
 
         .cta h2 {
@@ -497,6 +507,69 @@
             color: var(--cta-muted);
             margin-top: 18px;
             max-width: 620px;
+        }
+
+        .contact-form {
+            background: var(--form-bg);
+            border: 1px solid var(--form-border);
+            border-radius: 8px;
+            display: grid;
+            gap: 14px;
+            padding: clamp(20px, 3vw, 28px);
+        }
+
+        .field-group {
+            display: grid;
+            gap: 7px;
+        }
+
+        .field-group label {
+            color: var(--cta-text);
+            font-size: 0.88rem;
+            font-weight: 800;
+        }
+
+        .field-group input,
+        .field-group textarea {
+            appearance: none;
+            background: var(--field-bg);
+            border: 1px solid transparent;
+            border-radius: 8px;
+            color: var(--field-text);
+            font: inherit;
+            min-height: 46px;
+            outline: none;
+            padding: 12px 14px;
+            transition: border-color 160ms ease, box-shadow 160ms ease;
+            width: 100%;
+        }
+
+        .field-group textarea {
+            min-height: 132px;
+            resize: vertical;
+        }
+
+        .field-group input::placeholder,
+        .field-group textarea::placeholder {
+            color: var(--field-placeholder);
+        }
+
+        .field-group input:focus,
+        .field-group textarea:focus {
+            border-color: var(--teal);
+            box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.22);
+        }
+
+        .form-note {
+            color: var(--cta-muted);
+            font-size: 0.88rem;
+        }
+
+        .contact-form .button {
+            border: 0;
+            cursor: pointer;
+            margin-top: 4px;
+            width: 100%;
         }
 
         footer {
@@ -746,10 +819,30 @@
 
         <section class="cta" id="contact">
             <div>
-                <h2>다음 제품을 더 빠르고 단단하게 시작하세요.</h2>
-                <p>목표, 일정, 현재 준비된 자료를 알려주시면 48시간 안에 실행 가능한 첫 단계로 정리해드립니다.</p>
+                <h2>제휴 문의를 남겨주세요.</h2>
+                <p>함께 만들고 싶은 서비스, 현재 준비된 자료, 원하는 일정이 있다면 간단히 알려주세요. 확인 후 연락드리겠습니다.</p>
             </div>
-            <a class="button primary" href="mailto:hello@novaworks.example">hello@novaworks.example</a>
+            <form class="contact-form" action="https://formspree.io/f/xykqovgl" method="POST">
+                <input type="hidden" name="_subject" value="NovaWorks 제휴 문의">
+                <div class="field-group">
+                    <label for="name">이름</label>
+                    <input id="name" name="name" type="text" autocomplete="name" placeholder="홍길동" required>
+                </div>
+                <div class="field-group">
+                    <label for="email">이메일</label>
+                    <input id="email" name="email" type="email" autocomplete="email" placeholder="name@example.com" required>
+                </div>
+                <div class="field-group">
+                    <label for="company">회사 또는 서비스명</label>
+                    <input id="company" name="company" type="text" autocomplete="organization" placeholder="NovaWorks">
+                </div>
+                <div class="field-group">
+                    <label for="message">문의 내용</label>
+                    <textarea id="message" name="message" placeholder="제휴 목적, 일정, 필요한 범위를 알려주세요." required></textarea>
+                </div>
+                <p class="form-note">제출하면 Formspree를 통해 문의 내용이 전달됩니다.</p>
+                <button class="button primary" type="submit">제휴 문의 보내기</button>
+            </form>
         </section>
     </main>
 
