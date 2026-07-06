@@ -4,8 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NovaWorks | 디지털 제품 스튜디오</title>
+    <script>
+        (() => {
+            const preferredDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            let savedTheme = null;
+
+            try {
+                savedTheme = localStorage.getItem("novaworks-theme");
+            } catch (error) {
+                savedTheme = null;
+            }
+
+            document.documentElement.dataset.theme = savedTheme || (preferredDark ? "dark" : "light");
+        })();
+    </script>
     <style>
         :root {
+            color-scheme: light;
             --ink: #111827;
             --muted: #667085;
             --paper: #fbfaf7;
@@ -17,6 +32,37 @@
             --navy: #172033;
             --soft: #f3efe6;
             --shadow: 0 24px 70px rgba(23, 32, 51, 0.16);
+            --header-bg: rgba(251, 250, 247, 0.86);
+            --header-line: rgba(231, 226, 216, 0.82);
+            --nav-text: #3f4657;
+            --work-bg: #ece6da;
+            --score-bg: #f7f3ec;
+            --cta-bg: #111827;
+            --cta-text: #ffffff;
+            --cta-muted: rgba(255, 255, 255, 0.7);
+        }
+
+        :root[data-theme="dark"] {
+            color-scheme: dark;
+            --ink: #f8fafc;
+            --muted: #a8b3c7;
+            --paper: #0e1118;
+            --panel: #171c26;
+            --line: #2a3242;
+            --teal: #2dd4bf;
+            --coral: #fb7a63;
+            --amber: #f3b545;
+            --navy: #090c12;
+            --soft: #202836;
+            --shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+            --header-bg: rgba(14, 17, 24, 0.86);
+            --header-line: rgba(42, 50, 66, 0.86);
+            --nav-text: #d4dbea;
+            --work-bg: #131821;
+            --score-bg: #202635;
+            --cta-bg: #f8fafc;
+            --cta-text: #0e1118;
+            --cta-muted: rgba(14, 17, 24, 0.68);
         }
 
         * {
@@ -35,6 +81,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif;
             line-height: 1.6;
             letter-spacing: 0;
+            transition: background 220ms ease, color 220ms ease;
         }
 
         a {
@@ -49,8 +96,8 @@
 
         .site-header {
             align-items: center;
-            background: rgba(251, 250, 247, 0.86);
-            border-bottom: 1px solid rgba(231, 226, 216, 0.82);
+            background: var(--header-bg);
+            border-bottom: 1px solid var(--header-line);
             display: flex;
             gap: 24px;
             justify-content: space-between;
@@ -84,7 +131,7 @@
             gap: clamp(16px, 3vw, 34px);
             font-size: 0.94rem;
             font-weight: 700;
-            color: #3f4657;
+            color: var(--nav-text);
         }
 
         .nav a:hover {
@@ -106,14 +153,54 @@
         .header-cta,
         .button.primary {
             background: var(--ink);
-            color: #fff;
+            color: var(--paper);
             box-shadow: 0 12px 28px rgba(17, 24, 39, 0.18);
         }
 
         .button.secondary {
-            background: #fff;
+            background: var(--panel);
             border: 1px solid var(--line);
             color: var(--ink);
+        }
+
+        .header-actions {
+            align-items: center;
+            display: flex;
+            gap: 10px;
+        }
+
+        .theme-toggle {
+            align-items: center;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            color: var(--ink);
+            cursor: pointer;
+            display: inline-flex;
+            gap: 8px;
+            font: inherit;
+            font-size: 0.9rem;
+            font-weight: 800;
+            height: 46px;
+            justify-content: center;
+            min-width: 112px;
+            padding: 0 14px;
+            transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--teal);
+            transform: translateY(-2px);
+        }
+
+        .theme-toggle svg {
+            display: none;
+            flex: 0 0 auto;
+        }
+
+        :root:not([data-theme="dark"]) .theme-toggle .moon-icon,
+        :root[data-theme="dark"] .theme-toggle .sun-icon {
+            display: block;
         }
 
         .header-cta:hover,
@@ -308,7 +395,7 @@
         }
 
         .work-band {
-            background: #ece6da;
+            background: var(--work-bg);
             border-block: 1px solid var(--line);
         }
 
@@ -369,7 +456,7 @@
         }
 
         .score {
-            background: #f7f3ec;
+            background: var(--score-bg);
             border-radius: 8px;
             padding: 24px;
         }
@@ -388,8 +475,8 @@
         }
 
         .cta {
-            background: var(--ink);
-            color: #fff;
+            background: var(--cta-bg);
+            color: var(--cta-text);
             margin: 0 clamp(20px, 5vw, 72px) 48px;
             padding: clamp(40px, 6vw, 70px);
             border-radius: 8px;
@@ -407,7 +494,7 @@
         }
 
         .cta p {
-            color: rgba(255, 255, 255, 0.7);
+            color: var(--cta-muted);
             margin-top: 18px;
             max-width: 620px;
         }
@@ -517,7 +604,18 @@
             <a href="#process">프로세스</a>
             <a href="#proof">성과</a>
         </nav>
-        <a class="header-cta" href="#contact">프로젝트 문의</a>
+        <div class="header-actions">
+            <button class="theme-toggle" type="button" aria-label="다크 모드로 변경" aria-pressed="false">
+                <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M20.4 15.3A8.2 8.2 0 0 1 8.7 3.6A8.8 8.8 0 1 0 20.4 15.3Z" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M12 17.2A5.2 5.2 0 1 0 12 6.8a5.2 5.2 0 0 0 0 10.4ZM12 2v2.2M12 19.8V22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2 12h2.2M19.8 12H22M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>
+                </svg>
+                <span>다크모드</span>
+            </button>
+            <a class="header-cta" href="#contact">프로젝트 문의</a>
+        </div>
     </header>
 
     <main id="top">
@@ -673,6 +771,29 @@
         document.querySelectorAll(".reveal").forEach((element) => {
             observer.observe(element);
         });
+
+        const themeToggle = document.querySelector(".theme-toggle");
+        const themeLabel = themeToggle.querySelector("span");
+
+        function syncThemeToggle() {
+            const isDark = document.documentElement.dataset.theme === "dark";
+            themeToggle.setAttribute("aria-pressed", String(isDark));
+            themeToggle.setAttribute("aria-label", isDark ? "화이트 모드로 변경" : "다크 모드로 변경");
+            themeLabel.textContent = isDark ? "화이트모드" : "다크모드";
+        }
+
+        themeToggle.addEventListener("click", () => {
+            const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+            document.documentElement.dataset.theme = nextTheme;
+            try {
+                localStorage.setItem("novaworks-theme", nextTheme);
+            } catch (error) {
+                // Theme still changes for the current page even when storage is unavailable.
+            }
+            syncThemeToggle();
+        });
+
+        syncThemeToggle();
     </script>
 </body>
 </html>
